@@ -11,17 +11,17 @@ class Course(subject: String, number: Integer) {
   // The name of the course is the concatenation of subject 
   //  and number with no space in-between
   // Example: if subject is ANT and number is 101, the name is ANT101
-  def name: String = ???
+  def name: String = subject + number.toString
 
   // A lower division course is one with a number between 1 and 99.
-  def isLowerDivisionCourse: Boolean = ???
+  def isLowerDivisionCourse: Boolean = (1 <= number && number <= 99)
 
   // An upper division course is one with a number between 100 and 199.
-  def isUpperDivisionCourse: Boolean = ???
+  def isUpperDivisionCourse: Boolean = (100 <= number && number  <= 199)
 
   // A graduate division course is one with a number between 200 and 299.
-  def isGradDivisionCourse: Boolean = ???
+  def isGradDivisionCourse: Boolean = (200 <= number && number <= 299)
 
   // A seminar is a course with a number between 500 and 599.
-  def isSeminar: Boolean = ???
+  def isSeminar: Boolean = (500 <= number && number <= 599)
 }

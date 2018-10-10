@@ -19,8 +19,11 @@ object Factorial {
     // Uncomment this when you start working on this problem.
 
     // UNCOMMENT ME: 
-    /* @tailrec */
-    def iter(count: BigInt, acc: BigInt): BigInt = ???
+    @tailrec
+    def iter(count: BigInt, acc: BigInt): BigInt = {
+      if (count<=1) acc
+      else iter(count-1, count * acc)
+    }
 
     iter(n, 1)
   }

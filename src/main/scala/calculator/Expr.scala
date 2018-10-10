@@ -20,8 +20,51 @@ final case class BinOp(op: String, left: Expr, right: Expr) extends Expr
 object Calculator {
 
   // Simplifies the head of the expression (should not simplify recursively!).  
-  def simplifyHead(expr: Expr): Expr = ???
+  def simplifyHead(expr: Expr): Expr = expr match {
+      case UnOp("-", UnOp("-", e)) => e
+      case BinOp("+", e, Num(0)) => e
+      case BinOp("+", Num(0), e) => e
+      case BinOp("*", e, Num(1)) => e
+      case BinOp("*", Num(1), e) => e
+      case BinOp("*", _, Num(0)) => Num(0)
+      case BinOp("*", Num(0), _) => Num(0)
+      case BinOp("-", _, _) => Num(0)
+      case _ => expr
+  }
   
   // Evaluates the expression to a numeric value.
-  def evaluate(expr: Expr): Double = ???
+  def evaluate(expr: Expr): Double = expr match {
+    case Num(a) => a
+    case Var(_) => 1
+    case UnOp(o, _) if o != "-" => 1
+    case UnOp(o, a) if o == "-" => -evaluate(a)
+    case BinOp(o, _, _) if (o != "+" && o != "-" && o != "*") => 1
+    case BinOp(o, a, b) if o == "+" => {
+      if (a == Var("DUP")) {
+        return evaluate(b) + evaluate(b)
+      }
+      if (b == Var("DUP")) {
+        return evaluate(a) + evaluate(a)
+      }
+      return evaluate(a) + evaluate(b)
+    }
+    case BinOp(o, a, b) if o == "-" => {
+      if (a == Var("DUP")) {
+        return evaluate(b) - evaluate(b)
+      }
+      if (b == Var("DUP")) {
+        return evaluate(a) - evaluate(a)
+      }
+      return evaluate(a) - evaluate(b)
+    }
+    case BinOp(o, a, b) if o == "*" => {
+      if (a == Var("DUP")) {
+        return evaluate(b) * evaluate(b)
+      }
+      if (b == Var("DUP")) {
+        return evaluate(a) * evaluate(a)
+      }
+      return evaluate(a) * evaluate(b)
+    }
+  }
 }
